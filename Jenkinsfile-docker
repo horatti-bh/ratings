@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+
+  environment {
+    APP_NAME  = "ratings"
+  }
+
+  stages {
+
+    stage('Build Docker Image') {
+      steps {
+        sh '''
+          docker build -t rkalluru/d48-${APP_NAME}:v${BUILD_NUMBER} .
+          docker push rkalluru/d48-${APP_NAME}:v${BUILD_NUMBER}
+          docker tag rkalluru/d48-${APP_NAME}:v${BUILD_NUMBER} rkalluru/d48-${APP_NAME}:latest
+          docker push rkalluru/d48-${APP_NAME}:latest
+        '''
+      }
+    }
+
+  }
+
+}
